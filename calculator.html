@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>5年全因死亡风险计算器 · NHANES</title>
+  <meta name="description" content="基于NHANES研究的5年全因死亡风险计算工具，提供Cox模型计算、单位切换、缺失项说明及模型验证结果。">
+  <link rel="stylesheet" href="style.css">
+  <script src="predict.js" defer></script><script src="calculator.js" defer></script><script src="app.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">跳至主要内容</a>
+<header class="header"><div class="header-inner">
+  <a class="brand" href="#calculator" aria-label="NHANES风险计算工具首页"><span class="brand-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 4v16M4 12h16"/></svg></span><span>NHANES <b>风险计算工具</b><small>SURVIVAL RISK CALCULATOR</small></span></a>
+  <div class="header-meta"><a href="index.html" class="home-link">← Mengxi Lu · 个人主页</a><span class="research-tag">研究演示</span></div>
+</div></header>
+<div class="nav-wrap"><nav class="tabs" role="tablist" aria-label="工具导航">
+  <button id="tab-calculator" type="button" role="tab" aria-selected="true" aria-controls="panel-calculator" data-panel="calculator">风险计算</button>
+  <button id="tab-results" type="button" role="tab" aria-selected="false" aria-controls="panel-results" tabindex="-1" data-panel="results">研究结果</button>
+  <button id="tab-methods" type="button" role="tab" aria-selected="false" aria-controls="panel-methods" tabindex="-1" data-panel="methods">方法与说明</button>
+  <a class="report-link" href="index.html">Mengxi Lu · 个人主页 <span aria-hidden="true">↗</span></a>
+</nav></div>
+<main id="main">
+<section id="panel-calculator" class="tab-panel" role="tabpanel" aria-labelledby="tab-calculator">
+  <div class="page-heading"><div><div class="eyebrow">COX PROPORTIONAL HAZARDS MODEL</div><h1>5年全因死亡风险计算</h1><p>填写基线指标，估计体检后60个月内的累积死亡概率。</p></div><div class="model-chip"><span class="dot"></span> 当前模型：Cox回归</div></div>
+  <div class="scope-strip"><span><strong>适用人群</strong> 美国NHANES中40岁及以上参与者</span><span><strong>预测窗口</strong> 5年（60个月）</span><span><strong>输入</strong> 13项基线指标</span></div>
+  <div class="workspace">
+    <div class="input-card card">
+      <div class="card-heading"><div><h2>指标输入</h2><p><span class="required-mark">*</span> 为必填项；其余可留空，使用开发集插补值。</p></div><button type="button" class="quiet-button" id="load-example" disabled>载入示例</button></div>
+      <form id="risk-form" novalidate>
+        <div id="error-summary" class="error-summary" role="alert" hidden></div>
+        <div id="form-groups"><p class="loading-message">正在加载模型与输入字段…</p></div>
+        <div class="form-footer"><p id="entry-count">已填写 0 / 13 项</p><div><button type="button" id="clear-inputs" class="secondary-button">清空</button><button type="submit" id="calculate" class="primary-button" disabled>计算风险 <span aria-hidden="true">→</span></button></div></div>
+      </form>
+    </div>
+    <aside class="result-column" aria-label="计算结果与模型信息">
+      <section class="result-card card" aria-labelledby="result-heading">
+        <div class="result-heading"><h2 id="result-heading">风险估计</h2><span id="result-status" class="status">待输入</span></div>
+        <div class="result-body" aria-live="polite" aria-atomic="true">
+          <p class="result-label">5年全因死亡概率</p><div id="risk-value" class="risk-value">—<span>%</span></div>
+          <div class="probability-scale" aria-hidden="true"><div id="risk-fill"></div></div><div class="scale-labels"><span>0%</span><span>100%</span></div>
+          <p id="risk-message" class="result-message">先填写年龄与性别，再点击“计算风险”。</p>
+          <div id="result-detail" hidden><div class="survival-line"><span>对应5年生存概率</span><strong id="survival-value"></strong></div><p id="input-summary" class="input-summary"></p><details id="imputation-details"><summary id="imputation-title"></summary><ul id="imputation-list"></ul></details></div>
+        </div>
+        <div class="result-model"><span class="mini-label">当前模型在验证集中的表现</span><div><span>C-index<strong id="cox-cindex">—</strong></span><span>5年AUC<strong id="cox-auc">—</strong></span></div><button type="button" data-open-panel="results" class="inline-link">查看模型比较与校准 <span aria-hidden="true">↗</span></button></div>
+      </section>
+      <div class="context-card"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v6c0 5 8 9 8 9s8-4 8-9V6l-8-3Z"/><path d="m8 12 3 3 5-6"/></svg><div><strong>仅在浏览器本地计算</strong><p>输入不会上传或保存。</p></div></div>
+      <p class="use-note">本工具用于课程研究演示，不用于个人诊疗。输出为模型概率估计，不代表个人未来必然发生的结果。</p>
+    </aside>
+  </div>
+</section>
+<section id="panel-results" class="tab-panel" role="tabpanel" aria-labelledby="tab-results" hidden>
+  <div class="page-heading"><div><div class="eyebrow">MODEL VALIDATION</div><h1>研究结果</h1><p>模型在2013—2014年独立留出样本中的内部验证表现。</p></div></div>
+  <div class="study-stats"><div><span>纳入样本</span><strong>11,152<small>人</small></strong></div><div><span>5年内死亡事件</span><strong>1,000<small>例</small></strong></div><div><span>开发集 / 验证集</span><strong>7,452 <em>/</em> 3,700</strong></div><div><span>验证集死亡事件</span><strong>340<small>例</small></strong></div></div>
+  <section class="card evidence-card"><div class="card-heading"><div><h2>模型性能比较</h2><p>各模型采用相同的预测窗口；括号内为95%置信区间。</p></div><span class="subtle-tag">500次Bootstrap</span></div><div class="table-scroll"><table><caption class="sr-only">四种模型在验证集中的性能</caption><thead><tr><th>模型</th><th>C-index ↑</th><th>5年AUC ↑</th><th>5年Brier ↓</th></tr></thead><tbody id="metrics-body"><tr><td colspan="4">正在加载结果…</td></tr></tbody></table></div><p class="table-note">区分度和校准需要共同评价。Bootstrap区间以已训练模型为条件；模型间点估计差异未作正式统计检验。</p></section>
+  <section class="card figure-card"><div class="card-heading"><div><h2>结果图示</h2><p id="chart-description">验证集C-index和5年AUC及95%置信区间。</p></div><div class="chart-switch" role="group" aria-label="选择结果图"><button type="button" class="selected" data-chart="performance" aria-pressed="true">区分度</button><button type="button" data-chart="calibration" aria-pressed="false">校准</button><button type="button" data-chart="sex" aria-pressed="false">性别分组</button></div></div><a id="chart-link" href="assets/model_performance.png" target="_blank" rel="noopener" aria-label="打开完整结果图"><img id="research-chart" src="assets/model_performance.png" alt="各模型在验证集中的区分度及95%置信区间"></a><div class="figure-bottom"><p id="chart-note">C-index和AUC越高，区分能力越好。</p><span>点击图片查看原图 ↗</span></div></section>
+</section>
+<section id="panel-methods" class="tab-panel" role="tabpanel" aria-labelledby="tab-methods" hidden>
+  <div class="page-heading"><div><div class="eyebrow">STUDY & MODEL INFORMATION</div><h1>方法与使用说明</h1><p>了解模型的来源、输入处理方式与适用范围。</p></div></div>
+  <div class="methods-layout"><section class="card method-card"><h2>研究设计</h2><dl class="definition-list"><div><dt>数据来源</dt><dd>NHANES 2009—2014年三个调查周期，关联随访截至2019年底的公开死亡数据。</dd></div><div><dt>研究对象</dt><dd>年龄≥40岁、完成体检且死亡随访有效的参与者。</dd></div><div><dt>数据划分</dt><dd>2009—2012年用于开发；2013—2014年用于按调查周期划分的内部验证。</dd></div><div><dt>结局定义</dt><dd>体检后60个月内全因死亡。观察不足60个月且未死亡者按实际时间删失。</dd></div></dl><details class="method-disclosure"><summary>查看人群筛选流程</summary><a href="assets/cohort_flow.png" target="_blank" rel="noopener"><img src="assets/cohort_flow.png" alt="从30468名调查参与者筛选至11152名研究对象的纳入流程" loading="lazy"></a></details></section>
+  <section class="card method-card"><h2>输入与计算</h2><dl class="definition-list"><div><dt>必填信息</dt><dd>年龄与性别。年龄80岁及以上统一填写80；收入贫困比≥5统一填写5。</dd></div><div><dt>缺失指标</dt><dd>连续变量使用开发集中位数，分类变量使用开发集众数插补。结果中会列出采用插补的项目。</dd></div><div><dt>化验单位</dt><dd>白蛋白支持g/dL与g/L，肌酐支持mg/dL与μmol/L。切换单位时，已填数值会同步换算。</dd></div><div><dt>范围检查</dt><dd>数值需位于模型开发数据的观测范围。每项下方显示当前单位对应的范围。</dd></div><div><dt>计算模型</dt><dd>采用常规Cox模型及其60个月基线生存率，前处理参数与Python实现一致。</dd></div></dl></section>
+  <section class="card method-card full-width"><h2>评价与解读</h2><div class="method-columns"><div><h3>区分度</h3><p>C-index和时间依赖AUC用于描述模型区分较高与较低风险参与者的能力。</p></div><div><h3>预测误差与校准</h3><p>Brier评分越低，整体误差越小。校准图比较预测概率与观察风险；随机生存森林最高风险组存在风险低估的可能。</p></div><div><h3>适用范围</h3><p>模型基于美国NHANES样本，尚未在中国人群或独立外部队列验证。研究设计与输入处理方式见本页说明。</p></div></div><div class="resource-row"><button type="button" class="primary-button" data-open-panel="results">查看模型结果 ↗</button><a href="https://wwwn.cdc.gov/nchs/nhanes/" target="_blank" rel="noopener">NHANES官方数据 ↗</a><a href="https://www.cdc.gov/nchs/linked-data/mortality-files/" target="_blank" rel="noopener">死亡随访说明 ↗</a></div></section></div>
+</section>
+</main>
+<footer><span>NHANES生存预测研究 · Mengxi Lu</span><span>Cox模型 · 60个月预测窗口 · 研究演示</span></footer>
+</body></html>
