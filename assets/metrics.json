@@ -1,0 +1,75 @@
+[
+  {
+    "model": "Age + sex",
+    "params": {},
+    "c_index": 0.7806811053572859,
+    "auc_5yr": 0.7949596511412295,
+    "brier_5yr": 0.07210121413101256,
+    "bootstrap_replicates": 500,
+    "c_index_lower": 0.7547492137673499,
+    "c_index_upper": 0.8061653109058681,
+    "auc_5yr_lower": 0.7676898447048723,
+    "auc_5yr_upper": 0.8221488594745491,
+    "brier_5yr_lower": 0.0661030548692129,
+    "brier_5yr_upper": 0.07879201139058678,
+    "survey_weighted_auc_5yr": 0.7756591916265495,
+    "survey_weighted_brier_5yr": 0.06391222543473978,
+    "training_c_index": 0.7899135767612024
+  },
+  {
+    "model": "Cox",
+    "params": {},
+    "c_index": 0.8254127405706965,
+    "auc_5yr": 0.8402994177935749,
+    "brier_5yr": 0.06894386647957254,
+    "bootstrap_replicates": 500,
+    "c_index_lower": 0.8039220150929443,
+    "c_index_upper": 0.8459800861250262,
+    "auc_5yr_lower": 0.8182690273136509,
+    "auc_5yr_upper": 0.8616806470084781,
+    "brier_5yr_lower": 0.06326529620395535,
+    "brier_5yr_upper": 0.07574060463594107,
+    "survey_weighted_auc_5yr": 0.8271238732217778,
+    "survey_weighted_brier_5yr": 0.061187586877082055,
+    "training_c_index": 0.8253551320558502
+  },
+  {
+    "model": "Ridge Cox",
+    "params": {
+      "alpha": 1.0
+    },
+    "c_index": 0.8253852134105651,
+    "auc_5yr": 0.8402589262080948,
+    "brier_5yr": 0.06891896077261075,
+    "bootstrap_replicates": 500,
+    "c_index_lower": 0.8038516929267143,
+    "c_index_upper": 0.8460179008560308,
+    "auc_5yr_lower": 0.8181725982805235,
+    "auc_5yr_upper": 0.8616641613195893,
+    "brier_5yr_lower": 0.06322813133069768,
+    "brier_5yr_upper": 0.07571102047757257,
+    "survey_weighted_auc_5yr": 0.8269441220066778,
+    "survey_weighted_brier_5yr": 0.061158849039831896,
+    "training_c_index": 0.8252989190494381
+  },
+  {
+    "model": "Random survival forest",
+    "params": {
+      "min_samples_leaf": 15,
+      "max_features": "sqrt"
+    },
+    "c_index": 0.8374229239516323,
+    "auc_5yr": 0.8523857536622954,
+    "brier_5yr": 0.06690182910795194,
+    "bootstrap_replicates": 500,
+    "c_index_lower": 0.8182042229975873,
+    "c_index_upper": 0.8577138003831937,
+    "auc_5yr_lower": 0.8314962141558431,
+    "auc_5yr_upper": 0.8726795849102255,
+    "brier_5yr_lower": 0.06133156069809859,
+    "brier_5yr_upper": 0.07329602846450402,
+    "survey_weighted_auc_5yr": 0.8481719430649493,
+    "survey_weighted_brier_5yr": 0.059213544322616746,
+    "training_c_index": 0.9138269516666092
+  }
+]
